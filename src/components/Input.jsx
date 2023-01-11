@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 
-class List extends Component {
+class Input extends Component {
   render() {
     return (
-      <div />
+      <input type="text" />
     );
   }
 }
 
-export default List;
+export default Input;
