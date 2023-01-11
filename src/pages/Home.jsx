@@ -3,11 +3,12 @@ import { Link } from 'react-router-dom';
 import List from '../components/List';
 import Categories from '../components/Categories';
 import Input from '../components/Input';
-import { getCategories } from '../services/api';
+import { getCategories, getProductsFromCategoryAndQuery } from '../services/api';
 
 class Home extends Component {
   state = {
     categories: [],
+    search: '',
   };
 
   componentDidMount() {
