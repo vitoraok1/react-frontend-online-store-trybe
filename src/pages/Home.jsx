@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import List from '../components/List';
 import Categories from '../components/Categories';
 import Input from '../components/Input';
@@ -35,6 +36,7 @@ class Home extends Component {
         <Categories
           categories={ categories }
         />
+        <Link to="/shoppingCart" data-testid="shopping-cart-button">Carrinho</Link>
       </div>
     );
   }
