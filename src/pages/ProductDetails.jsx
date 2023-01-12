@@ -16,7 +16,6 @@ export default class ProductDetails extends Component {
     const { match } = this.props;
     const { params: { id } } = match;
     const response = await getProductById(id);
-    console.log(response);
     this.setState({
       details: response,
     });
