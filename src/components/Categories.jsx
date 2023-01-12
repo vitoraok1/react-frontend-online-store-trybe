@@ -15,7 +15,7 @@ class Categories extends Component {
               type="button"
               data-testid="category"
               value={ id }
-              onClick={ filterCategories }
+              onClick={ () => filterCategories(id) }
             >
               { name }
             </button>

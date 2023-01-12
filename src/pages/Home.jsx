@@ -11,6 +11,7 @@ class Home extends Component {
     categories: [],
     search: '',
     searchResult: [],
+    id: '',
   };
 
   componentDidMount() {
@@ -25,8 +26,8 @@ class Home extends Component {
   };
 
   handleClick = async () => {
-    const { search } = this.state;
-    const response = await getProductsFromCategoryAndQuery('', search);
+    const { id, search } = this.state;
+    const response = await getProductsFromCategoryAndQuery(id, search);
     this.setState({
       searchResult: response.results,
     });
@@ -36,6 +37,12 @@ class Home extends Component {
     this.setState({
       search: target.value,
     });
+  };
+
+  filterCategories = (id) => {
+    this.setState({
+      id,
+    }, () => this.handleClick());
   };
 
   render() {
@@ -55,6 +62,7 @@ class Home extends Component {
         <List />
         <Categories
           categories={ categories }
+          filterCategories={ this.filterCategories }
         />
         <Link to="/shoppingCart" data-testid="shopping-cart-button">Carrinho</Link>
         <ProductList searchResult={ searchResult } />
