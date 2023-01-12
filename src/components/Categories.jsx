@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 class Categories extends Component {
   render() {
-    const { categories } = this.props;
+    const { categories, filterCategories } = this.props;
     return (
       <ol>
         { categories.map(({ id, name }) => (
@@ -15,6 +15,7 @@ class Categories extends Component {
               type="button"
               data-testid="category"
               value={ id }
+              onClick={ () => filterCategories(id) }
             >
               { name }
             </button>
@@ -27,6 +28,7 @@ class Categories extends Component {
 
 Categories.propTypes = {
   categories: PropTypes.arrayOf(PropTypes.object),
+  filterCategories: PropTypes.func,
 }.isRequired;
 
 export default Categories;
