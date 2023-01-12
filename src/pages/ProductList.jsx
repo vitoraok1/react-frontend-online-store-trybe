@@ -4,9 +4,14 @@ import Product from '../components/Product';
 
 class ProductList extends Component {
   render() {
-    const { searchResult } = this.props;
+    const { searchResult, addProduct, info } = this.props;
     const renderProducts = searchResult.map((product) => (
-      <Product { ...product } key={ product.id } />
+      <Product
+        { ...product }
+        key={ product.id }
+        info={ info }
+        addProduct={ addProduct }
+      />
     ));
     return (
       <section>
@@ -23,6 +28,10 @@ ProductList.propTypes = {
     length: PropTypes.number,
     map: PropTypes.func,
   }).isRequired,
-};
+  price: PropTypes.number,
+  thumbnail: PropTypes.string,
+  title: PropTypes.string,
+  addProduct: PropTypes.func,
+}.isRequired;
 
 export default ProductList;

@@ -12,11 +12,24 @@ class Home extends Component {
     search: '',
     searchResult: [],
     id: '',
+    cartItems: [],
   };
 
   componentDidMount() {
     this.fetchCategories();
   }
+
+  addProduct = (info) => {
+    const { cartItems } = this.state;
+    this.setState({
+      cartItems: [...cartItems, info],
+    }, () => this.saveLocalStorage());
+  };
+
+  saveLocalStorage = () => {
+    const { cartItems } = this.state;
+    localStorage.setItem('cart', JSON.stringify(cartItems));
+  };
 
   fetchCategories = async () => {
     const response = await getCategories();
@@ -65,7 +78,10 @@ class Home extends Component {
           filterCategories={ this.filterCategories }
         />
         <Link to="/shoppingCart" data-testid="shopping-cart-button">Carrinho</Link>
-        <ProductList searchResult={ searchResult } />
+        <ProductList
+          searchResult={ searchResult }
+          addProduct={ this.addProduct }
+        />
       </div>
     );
   }
