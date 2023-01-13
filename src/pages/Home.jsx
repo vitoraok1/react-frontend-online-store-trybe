@@ -27,11 +27,6 @@ class Home extends Component {
     }
   };
 
-  saveLocalStorage = () => {
-    const { cartItems } = this.state;
-    localStorage.setItem('cart', JSON.stringify(cartItems));
-  };
-
   fetchCategories = async () => {
     const response = await getCategories();
     this.setState({
