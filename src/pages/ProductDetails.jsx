@@ -3,10 +3,15 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { getProductById } from '../services/api';
 import Button from '../components/Button';
+import Form from '../components/Form';
 
 export default class ProductDetails extends Component {
   state = {
     details: {},
+    validationField: false,
+    email: '',
+    rating: '',
+    comment: '',
   };
 
   componentDidMount() {
@@ -22,6 +27,36 @@ export default class ProductDetails extends Component {
     });
   };
 
+  onInputChange = ({ target }) => {
+    const { value, name, checked, id } = target;
+
+    if (checked) {
+      this.setState({
+        [name]: id,
+      });
+    } else {
+      this.setState({
+        [name]: value,
+      });
+    }
+  };
+
+  handleButton = (event) => {
+    event.preventDefault();
+
+    const { email, rating, comment, validationField } = this.state;
+    const regexMail = /^((?!\.)[\w-_.]*[^.])(@\w+)(\.\w+(\.\w+)?[^.\W])$/;
+    const validateEmail = regexMail.test(email);
+    const validateRadio = rating === '';
+
+    this.setState({
+      validationField: validateEmail && validateRadio,
+      email,
+      rating,
+      comment,
+    });
+  };
+
   addProduct = (info) => {
     const savedItems = JSON.parse(localStorage.getItem('cart'));
     if (!savedItems) {
@@ -32,9 +67,10 @@ export default class ProductDetails extends Component {
   };
 
   render() {
-    const { details } = this.state;
+    const { details, email, rating, comment, validationField } = this.state;
     const { id, price, thumbnail, title } = details;
     const info = { id, price, thumbnail, title };
+    const { onInputChange, handleButton } = this.props;
     return (
       <div>
         <h2 data-testid="product-detail-name">{ details.title }</h2>
@@ -53,6 +89,14 @@ export default class ProductDetails extends Component {
           dataTestId="product-detail-add-to-cart"
         />
         <Link to="/shoppingCart" data-testid="shopping-cart-button">Carrinho</Link>
+        <Form
+          onInputChange={ this.onInputChange }
+          handleButton={ this.handleButton }
+          email={ email }
+          rating={ rating }
+          comment={ comment }
+          validationField={ validationField }
+        />
       </div>
     );
   }
@@ -63,5 +107,7 @@ ProductDetails.propTypes = {
     params: PropTypes.shape({
       id: PropTypes.string,
     }).isRequired,
-  }).isRequired,
-};
+    onInputChange: PropTypes.func,
+    handleButton: PropTypes.func,
+  }),
+}.isRequired;
