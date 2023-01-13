@@ -3,12 +3,12 @@ import PropTypes from 'prop-types';
 
 export default class Button extends Component {
   render() {
-    const { info, addProduct } = this.props;
+    const { info, addProduct, dataTestId } = this.props;
     return (
       <div>
         <button
           type="button"
-          data-testid="product-add-to-cart"
+          data-testid={ dataTestId }
           onClick={ () => addProduct(info) }
         >
           Adicionar ao carrinho

@@ -27,7 +27,11 @@ class Product extends Component {
             </span>
           </div>
         </Link>
-        <Button info={ info } addProduct={ addProduct } />
+        <Button
+          info={ info }
+          addProduct={ addProduct }
+          dataTestId="product-add-to-cart"
+        />
       </section>
     );
   }
