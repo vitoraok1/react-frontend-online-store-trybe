@@ -12,7 +12,6 @@ class Home extends Component {
     search: '',
     searchResult: [],
     id: '',
-    cartItems: [],
   };
 
   componentDidMount() {
@@ -20,10 +19,12 @@ class Home extends Component {
   }
 
   addProduct = (info) => {
-    const { cartItems } = this.state;
-    this.setState({
-      cartItems: [...cartItems, info],
-    }, () => this.saveLocalStorage());
+    const savedItems = JSON.parse(localStorage.getItem('cart'));
+    if (!savedItems) {
+      localStorage.setItem('cart', JSON.stringify([info]));
+    } else {
+      localStorage.setItem('cart', JSON.stringify([...savedItems, info]));
+    }
   };
 
   saveLocalStorage = () => {
