@@ -4,19 +4,32 @@ import { Link } from 'react-router-dom';
 import { getProductById } from '../services/api';
 import Button from '../components/Button';
 import Form from '../components/Form';
+import Coment from '../components/Coment';
 
 export default class ProductDetails extends Component {
   state = {
     details: {},
-    validationField: false,
+    validationField: true,
     email: '',
     rating: '',
-    comment: '',
+    text: '',
+    previousComents: [],
   };
 
   componentDidMount() {
     this.getProductDetails();
+    this.getComents();
   }
+
+  getComents = () => {
+    const { match } = this.props;
+    const { params: { id } } = match;
+
+    const previousComents = JSON.parse(localStorage.getItem(id));
+    this.setState({
+      previousComents,
+    });
+  };
 
   getProductDetails = async () => {
     const { match } = this.props;
@@ -41,20 +54,51 @@ export default class ProductDetails extends Component {
     }
   };
 
+  validateInputs = () => {
+    const { email, rating } = this.state;
+
+    const regexMail = /^((?!\.)[\w-_.]*[^.])(@\w+)(\.\w+(\.\w+)?[^.\W])$/;
+    const validateEmail = regexMail.test(email);
+    const validateRadio = rating !== '';
+
+    return validateEmail && validateRadio;
+  };
+
+  saveOnLocalStorage = () => {
+    const { email, rating, text } = this.state;
+    const { match } = this.props;
+    const { params: { id } } = match;
+    const savedComents = JSON.parse(localStorage.getItem(id));
+    const info = {
+      email,
+      text,
+      rating,
+    };
+
+    if (!savedComents) {
+      localStorage.setItem(id, JSON.stringify([info]));
+    } else {
+      localStorage.setItem(id, JSON.stringify([...savedComents, info]));
+    }
+  };
+
   handleButton = (event) => {
     event.preventDefault();
 
-    const { email, rating, comment, validationField } = this.state;
-    const regexMail = /^((?!\.)[\w-_.]*[^.])(@\w+)(\.\w+(\.\w+)?[^.\W])$/;
-    const validateEmail = regexMail.test(email);
-    const validateRadio = rating === '';
+    if (this.validateInputs()) {
+      this.saveOnLocalStorage();
+      this.setState({
+        email: '',
+        text: '',
+        validationField: true,
+      });
+    } else {
+      this.setState({
+        validationField: false,
+      });
+    }
 
-    this.setState({
-      validationField: validateEmail && validateRadio,
-      email,
-      rating,
-      comment,
-    });
+    this.getComents();
   };
 
   addProduct = (info) => {
@@ -67,10 +111,10 @@ export default class ProductDetails extends Component {
   };
 
   render() {
-    const { details, email, rating, comment, validationField } = this.state;
+    const {
+      details, email, rating, text, validationField, previousComents } = this.state;
     const { id, price, thumbnail, title } = details;
     const info = { id, price, thumbnail, title };
-    const { onInputChange, handleButton } = this.props;
     return (
       <div>
         <h2 data-testid="product-detail-name">{ details.title }</h2>
@@ -94,9 +138,14 @@ export default class ProductDetails extends Component {
           handleButton={ this.handleButton }
           email={ email }
           rating={ rating }
-          comment={ comment }
+          text={ text }
           validationField={ validationField }
         />
+        { validationField
+          ? null : <span data-testid="error-msg">Campos inválidos</span>}
+        { previousComents && previousComents.map((data, index) => (
+          <Coment key={ index } data={ data } />
+        ))}
       </div>
     );
   }

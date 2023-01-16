@@ -4,8 +4,7 @@ import PropTypes from 'prop-types';
 export default class Form extends Component {
   render() {
     const {
-      onInputChange, handleButton, email, rating, comment, validationField 
-    } = this.props;
+      onInputChange, handleButton, email, text } = this.props;
 
     return (
       <form>
@@ -13,8 +12,8 @@ export default class Form extends Component {
           type="email"
           data-testid="product-detail-email"
           name="email"
-          required="true"
           onChange={ onInputChange }
+          value={ email }
         />
         <label htmlFor="1">
           1
@@ -23,7 +22,6 @@ export default class Form extends Component {
             data-testid="1-rating"
             id="1"
             name="rating"
-            required="true"
             onChange={ onInputChange }
           />
         </label>
@@ -34,7 +32,6 @@ export default class Form extends Component {
             data-testid="2-rating"
             id="2"
             name="rating"
-            required="true"
             onChange={ onInputChange }
           />
         </label>
@@ -45,7 +42,6 @@ export default class Form extends Component {
             data-testid="3-rating"
             id="3"
             name="rating"
-            required="true"
             onChange={ onInputChange }
           />
         </label>
@@ -56,7 +52,6 @@ export default class Form extends Component {
             data-testid="4-rating"
             id="4"
             name="rating"
-            required="true"
             onChange={ onInputChange }
           />
         </label>
@@ -67,17 +62,17 @@ export default class Form extends Component {
             data-testid="5-rating"
             id="5"
             name="rating"
-            required="true"
             onChange={ onInputChange }
           />
         </label>
         <textarea
           data-testid="product-detail-evaluation"
           id="detailEvaluation"
-          name="comment"
+          name="text"
           rows="4"
           cols="50"
           onChange={ onInputChange }
+          value={ text }
         />
         <button
           type="submit"
@@ -95,7 +90,7 @@ Form.propTypes = {
   onInputChange: PropTypes.func,
   handleButton: PropTypes.func,
   email: PropTypes.string,
-  rating: PropTypes.bool,
-  comment: PropTypes.string,
+  rating: PropTypes.string,
+  text: PropTypes.string,
   validationField: PropTypes.bool,
 }.isRequired;
